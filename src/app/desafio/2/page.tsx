@@ -1,7 +1,7 @@
 // src/app/desafio/2/page.tsx
 "use client";
  
-import EnigmaChallenge from "@/components/challenges/EnigmaChallenge";
+import EnigmaChallenge from "../../Components/challenges/EnigmaChallenge";
  
 export default function Desafio2() {
   return <EnigmaChallenge />;

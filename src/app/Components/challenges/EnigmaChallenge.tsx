@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useProgress } from "@/hooks/useProgress";
+import { useProgress } from "../../hooks/useProgress";
 
 // Mapeamento símbolo → letra
 // Troque a FRASE e o mapeamento quando definir a palavra/frase real

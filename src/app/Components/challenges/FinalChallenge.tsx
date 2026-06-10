@@ -1,13 +1,8 @@
 // src/components/challenges/FinalChallenge.tsx
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useSpring,
-  useTransform,
-} from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const MAX_CLICKS = 100;
 
@@ -20,6 +15,7 @@ interface Confetti {
   delay: number;
   size: number;
   rotation: number;
+  round: boolean;
 }
 
 const CONFETTI_COLORS = [
@@ -40,6 +36,7 @@ function generateConfetti(count = 80): Confetti[] {
     delay: Math.random() * 0.8,
     size: 6 + Math.random() * 8,
     rotation: Math.random() * 720 - 360,
+    round: Math.random() > 0.5,
   }));
 }
 
@@ -56,7 +53,7 @@ export default function FinalChallenge() {
   // Cor do balão muda de laranja para rosa conforme enche
   const hue = 20 + progress * 320;
 
-  const handleClick = useCallback(() => {
+  function handleClick() {
     if (burst) return;
     setClicks((c) => {
       const next = c + 1;
@@ -82,7 +79,7 @@ export default function FinalChallenge() {
       osc.start();
       osc.stop(ctx.currentTime + 0.1);
     } catch {}
-  }, [burst, clicks]);
+  }
 
   return (
     <div
@@ -97,17 +94,13 @@ export default function FinalChallenge() {
               key={c.id}
               initial={{ y: -20, x: `${c.x}vw`, opacity: 1, rotate: 0 }}
               animate={{ y: "110vh", opacity: 0, rotate: c.rotation }}
-              transition={{
-                duration: c.duration,
-                delay: c.delay,
-                ease: "easeIn",
-              }}
+              transition={{ duration: c.duration, delay: c.delay, ease: "easeIn" }}
               className="fixed top-0 pointer-events-none z-40"
               style={{
                 width: c.size,
                 height: c.size,
                 background: c.color,
-                borderRadius: Math.random() > 0.5 ? "50%" : "2px",
+                borderRadius: c.round ? "50%" : "2px",
               }}
             />
           ))}
@@ -119,18 +112,12 @@ export default function FinalChallenge() {
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-10 z-10"
       >
-        <p
-          className="text-xs uppercase tracking-widest mb-2"
-          style={{ color: "var(--accent-yellow)" }}
-        >
+        <p className="text-xs uppercase tracking-widest mb-2" style={{ color: "var(--accent-yellow)" }}>
           Surpresa Final 🎁
         </p>
         {!showCake && (
           <>
-            <h1
-              className="text-3xl md:text-4xl font-black mb-2"
-              style={{ color: "var(--text-primary)" }}
-            >
+            <h1 className="text-3xl md:text-4xl font-black mb-2" style={{ color: "var(--text-primary)" }}>
               Encha o balão!
             </h1>
             <p style={{ color: "var(--text-muted)" }}>
@@ -167,13 +154,11 @@ export default function FinalChallenge() {
             <motion.button
               onClick={handleClick}
               animate={
-                burst ? { scale: [1, 2, 0], opacity: [1, 1, 0] } : { scale }
-              }
-              transition={
                 burst
-                  ? { duration: 0.4 }
-                  : { type: "spring", stiffness: 200, damping: 10 }
+                  ? { scale: [1, 2, 0], opacity: [1, 1, 0] }
+                  : { scale }
               }
+              transition={burst ? { duration: 0.4 } : { type: "spring", stiffness: 200, damping: 10 }}
               whileTap={!burst ? { scale: scale * 0.9 } : {}}
               className="relative cursor-pointer select-none focus:outline-none"
               style={{ fontSize: "8rem", lineHeight: 1 }}
@@ -185,10 +170,7 @@ export default function FinalChallenge() {
                 animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
                 transition={{ repeat: Infinity, duration: 1.5 }}
                 className="absolute inset-0 rounded-full pointer-events-none"
-                style={{
-                  background: `radial-gradient(circle, hsl(${hue}, 100%, 60%) 0%, transparent 70%)`,
-                  zIndex: -1,
-                }}
+                style={{ background: `radial-gradient(circle, hsl(${hue}, 100%, 60%) 0%, transparent 70%)`, zIndex: -1 }}
               />
             </motion.button>
 
@@ -237,8 +219,7 @@ export default function FinalChallenge() {
               className="text-4xl md:text-6xl font-black"
               style={{ color: "var(--accent-yellow)" }}
             >
-              Parabéns,
-              <br />
+              Parabéns,<br />
               <span style={{ color: "var(--accent-pink)" }}>Arthur! 🎉</span>
             </motion.h3>
 

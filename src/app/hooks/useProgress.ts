@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { getProgress, completeChallenge, type Progress, type ChallengeId } from "@/lib/store";
+import { getProgress, completeChallenge, type Progress, type ChallengeId } from "../lib/store";
 
 export function useProgress() {
   const [progress, setProgress] = useState<Progress>({ completed: [], unlocked: [1] });
