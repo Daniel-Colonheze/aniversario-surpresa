@@ -3,25 +3,70 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
+import Cigarro3D from "./Cigarro3D";
 
-// Gerado uma vez fora do componente — evita Math.random() no render
-const PARTICLES = Array.from({ length: 30 }, (_, i) => ({
+const PARTICLES = Array.from({ length: 40 }, () => ({
   width: Math.random() * 4 + 1,
   height: Math.random() * 4 + 1,
   left: `${Math.random() * 100}%`,
   top: `${Math.random() * 100}%`,
-  duration: 3 + Math.random() * 4,
-  delay: Math.random() * 3,
-  color: i % 3 === 0 ? "var(--accent-cyan)" : i % 3 === 1 ? "var(--accent-purple)" : "var(--accent-pink)",
+  duration: 4 + Math.random() * 5,
+  delay: Math.random() * 2,
+  color:
+    Math.random() > 0.6
+      ? "var(--accent-cyan)"
+      : Math.random() > 0.3
+        ? "var(--accent-purple)"
+        : "var(--accent-pink)",
 }));
 
 const WORDS = ["Para", "um", "amigo", "especial."];
 
+const BACKGROUND_IMAGES = [
+  {
+    src: "/images/momento-1.jpg",
+    alt: "",
+    position: "top-10 left-5",
+    rotate: -5,
+    width: "w-48 md:w-64",
+    height: "h-32 md:h-44",
+  },
+  {
+    src: "/images/momento-2.jpg",
+    alt: "",
+    position: "bottom-20 right-5",
+    rotate: 8,
+    width: "w-52 md:w-72",
+    height: "h-36 md:h-48",
+  },
+  {
+    src: "/images/momento-3.jpg",
+    alt: "",
+    position: "top-1/3 right-10",
+    rotate: -3,
+    width: "w-44 md:w-60",
+    height: "h-32 md:h-40",
+  },
+  {
+    src: "/images/momento-4.jpg",
+    alt: "",
+    position: "bottom-1/4 left-10",
+    rotate: 6,
+    width: "w-56 md:w-80",
+    height: "h-40 md:h-52",
+  },
+];
+
 export default function HeroSection() {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const bastaoScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.7]);
 
   return (
     <section
@@ -29,35 +74,74 @@ export default function HeroSection() {
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
       style={{ background: "var(--bg-primary)" }}
     >
-      {/* Partículas de fundo */}
       <Particles />
+      {BACKGROUND_IMAGES.map((img, idx) => (
+        <div
+          key={idx}
+          className={`fixed ${img.position} ${img.width} ${img.height} rounded-2xl overflow-hidden pointer-events-none z-0`}
+          style={{ transform: `rotate(${img.rotate}deg)` }}
+        >
+          <Image
+            src={img.src}
+            alt={img.alt}
+            fill
+            className="object-cover"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src =
+                "https://placehold.co/600x800/1E2235/FFFFFF?text=Foto";
+            }}
+          />
+        </div>
+      ))}
 
-      <motion.div style={{ opacity, y }} className="relative z-10 text-center px-6">
-        {/* Eyebrow */}
+      {/* Container fixo no canto superior direito: bastão (esquerda) + foto momento-3 (direita) */}
+      <div className="fixed top-6 right-4 z-30 flex items-center gap-4 pointer-events-none">
+        <motion.div
+          style={{ scale: bastaoScale }}
+          className="w-48 h-80 md:w-64 md:h-[28rem] flex-shrink-0"
+        >
+          <Cigarro3D scrollProgress={scrollYProgress} />
+        </motion.div>
+        <div className="relative w-44 h-32 md:w-60 md:h-40 rounded-2xl overflow-hidden shadow-xl flex-shrink-0">
+          <Image
+            src="/images/momento-3.jpg"
+            alt="Momento 3"
+            fill
+            className="object-cover"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src =
+                "https://placehold.co/600x800/1E2235/FFFFFF?text=Foto";
+            }}
+          />
+        </div>
+      </div>
+      <motion.div
+        style={{ opacity, y }}
+        className="relative z-10 text-center px-6 max-w-4xl mx-auto"
+      >
         <motion.p
           initial={{ opacity: 0, letterSpacing: "0.5em" }}
           animate={{ opacity: 1, letterSpacing: "0.3em" }}
-          transition={{ duration: 1.2, delay: 0.2 }}
+          transition={{ duration: 1, delay: 0.2 }}
           className="text-sm uppercase mb-8 tracking-widest"
           style={{ color: "var(--accent-cyan)" }}
         >
           Uma surpresa para você
         </motion.p>
 
-        {/* Título principal — palavras aparecem uma por uma */}
-        <h1 className="text-5xl md:text-8xl font-black leading-tight mb-6">
+        <h1 className="text-6xl md:text-9xl font-black leading-tight mb-6">
           {WORDS.map((word, i) => (
             <motion.span
               key={word}
-              initial={{ opacity: 0, y: 60, filter: "blur(10px)" }}
+              initial={{ opacity: 0, y: 80, filter: "blur(12px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.7, delay: 0.6 + i * 0.18, ease: "easeOut" }}
-              className="inline-block mr-4"
+              transition={{ duration: 0.8, delay: 0.5 + i * 0.15 }}
+              className="inline-block mr-5"
               style={{
                 background: i % 2 === 0 ? "var(--gradient-hero)" : undefined,
                 WebkitBackgroundClip: i % 2 === 0 ? "text" : undefined,
-                WebkitTextFillColor: i % 2 === 0 ? "transparent" : "var(--text-primary)",
-                backgroundClip: i % 2 === 0 ? "text" : undefined,
+                WebkitTextFillColor:
+                  i % 2 === 0 ? "transparent" : "var(--text-primary)",
               }}
             >
               {word}
@@ -65,48 +149,16 @@ export default function HeroSection() {
           ))}
         </h1>
 
-        {/* Nome */}
         <motion.p
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 1.5 }}
-          className="text-2xl md:text-4xl font-light mb-12"
+          transition={{ duration: 0.7, delay: 1.3 }}
+          className="text-3xl md:text-5xl font-light mb-12"
           style={{ color: "var(--accent-pink)" }}
         >
-          Arthur Begosso 🎉
+          Arthur Begosso
         </motion.p>
-
-        {/* Scroll hint */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.2, duration: 1 }}
-          className="flex flex-col items-center gap-2"
-          style={{ color: "var(--text-muted)" }}
-        >
-          <span className="text-sm tracking-widest uppercase">Role para baixo</span>
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
-            className="w-5 h-8 rounded-full border-2 flex items-start justify-center pt-1"
-            style={{ borderColor: "var(--text-muted)" }}
-          >
-            <div className="w-1 h-2 rounded-full" style={{ background: "var(--accent-cyan)" }} />
-          </motion.div>
-        </motion.div>
       </motion.div>
-
-      {/* Imagem placeholder — troque por uma foto real depois */}
-      <motion.div
-        initial={{ opacity: 0, x: 80 }}
-        animate={{ opacity: 0.15, x: 0 }}
-        transition={{ duration: 1.2, delay: 1 }}
-        className="absolute right-0 top-1/2 -translate-y-1/2 w-64 h-64 md:w-96 md:h-96 rounded-full"
-        style={{
-          background: "var(--gradient-hero)",
-          filter: "blur(60px)",
-        }}
-      />
     </section>
   );
 }
@@ -125,8 +177,12 @@ function Particles() {
             top: p.top,
             background: p.color,
           }}
-          animate={{ y: [0, -30, 0], opacity: [0.2, 0.8, 0.2] }}
-          transition={{ duration: p.duration, repeat: Infinity, delay: p.delay }}
+          animate={{ y: [0, -35, 0], opacity: [0.15, 0.7, 0.15] }}
+          transition={{
+            duration: p.duration,
+            repeat: Infinity,
+            delay: p.delay,
+          }}
         />
       ))}
     </div>
