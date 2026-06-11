@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Brain, Key, Puzzle, Gift, Lock } from "lucide-react";
-import { useProgress } from "../../../hooks/useProgress";
-import type { ChallengeId } from "../../../lib/store";
+import { useProgress } from "../../hooks/useProgress";
+import type { ChallengeId } from "../../lib/store";
 import Cigarro3D from "./Cigarro3D";
 
 const CHALLENGES = [
