@@ -1,15 +1,16 @@
 // src/components/challenges/PuzzleChallenge.tsx
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { Shuffle, CheckCircle, ArrowRight, Move } from "lucide-react";
 import { useProgress } from "../../hooks/useProgress";
 
 const GRID = 4;
 const TOTAL = GRID * GRID;
-// Imagem do quebra-cabeça — troque pelo caminho real depois
-const PUZZLE_IMAGE = "/images/puzzle-photo.jpg";
+const PUZZLE_IMAGE = "/images/momento-10.jpg";
 
 function createShuffled(): number[] {
   const arr = Array.from({ length: TOTAL }, (_, i) => i);
@@ -27,6 +28,16 @@ export default function PuzzleChallenge() {
   const [selected, setSelected] = useState<number | null>(null);
   const [solved, setSolved] = useState(false);
   const [moves, setMoves] = useState(0);
+  const [pieceSize, setPieceSize] = useState(84);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setPieceSize(window.innerWidth < 768 ? 72 : 84);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const checkSolved = useCallback((arr: number[]) => {
     return arr.every((v, i) => v === i);
@@ -60,141 +71,269 @@ export default function PuzzleChallenge() {
     setSolved(false);
   }
 
-  // Responsivo: máximo 320px em mobile, 384px em desktop
-  const PIECE_SIZE_VAR = "var(--piece-size)";
-  const GRID_SIZE_VAR = "var(--grid-size)";
+  const gridSize = pieceSize * GRID;
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
       style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "2rem 1rem",
         background: "var(--bg-primary)",
-        // peça: 20vw em mobile (máx 96px), 80px em desktop
-        ["--piece-size" as string]: "min(20vw, 96px)",
-        ["--grid-size" as string]: `calc(var(--piece-size) * ${GRID})`,
-      } as React.CSSProperties}
+      }}
     >
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-8"
+        style={{ textAlign: "center", marginBottom: "2rem" }}
       >
-        <p className="text-xs uppercase tracking-widest mb-2" style={{ color: "var(--accent-pink)" }}>
-          Desafio 03
-        </p>
-        <h1 className="text-3xl md:text-4xl font-black mb-2" style={{ color: "var(--text-primary)" }}>
-          Quebra-Cabeça 🧩
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.5rem",
+            marginBottom: "0.5rem",
+          }}
+        >
+          <Move size={20} style={{ color: "var(--accent-pink)" }} />
+          <p
+            style={{
+              fontSize: "0.75rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "var(--accent-pink)",
+            }}
+          >
+            Desafio 03
+          </p>
+        </div>
+        <h1
+          style={{
+            fontSize: "clamp(1.75rem, 5vw, 2.5rem)",
+            fontWeight: 900,
+            color: "var(--text-primary)",
+          }}
+        >
+          Quebra-Cabeça
         </h1>
-        <p style={{ color: "var(--text-muted)" }}>
+        <p
+          style={{
+            marginTop: "0.5rem",
+            fontSize: "0.875rem",
+            color: "var(--text-muted)",
+          }}
+        >
           Clique em duas peças para trocá-las. Monte a imagem corretamente.
         </p>
-        <p className="mt-2 text-sm" style={{ color: "var(--accent-pink)" }}>
+        <p
+          style={{
+            marginTop: "0.75rem",
+            fontSize: "0.875rem",
+            fontWeight: "bold",
+            color: "var(--accent-pink)",
+          }}
+        >
           Movimentos: {moves}
         </p>
       </motion.div>
 
-      {/* Grid do puzzle */}
       <div
-        className="relative mb-6"
         style={{
-          width: GRID_SIZE_VAR,
-          height: GRID_SIZE_VAR,
+          width: gridSize,
+          height: gridSize,
           display: "grid",
-          gridTemplateColumns: `repeat(${GRID}, var(--piece-size))`,
-          gap: 3,
-          background: "var(--bg-secondary)",
-          padding: 3,
-          borderRadius: 12,
-          border: "1px solid rgba(255,20,147,0.3)",
+          gridTemplateColumns: `repeat(${GRID}, ${pieceSize}px)`,
+          gap: "2px",
+          background: "rgba(30,34,53,0.6)",
+          padding: "4px",
+          borderRadius: "1rem",
+          border: "1px solid rgba(255,20,147,0.4)",
+          boxShadow: "0 15px 35px rgba(0,0,0,0.3), 0 0 15px rgba(255,20,147,0.2)",
+          marginBottom: "1.5rem",
         }}
       >
         {pieces.map((pieceIndex, position) => {
           const col = pieceIndex % GRID;
           const row = Math.floor(pieceIndex / GRID);
           const isSelected = selected === position;
-          const isCorrect = pieceIndex === position;
+          const isCorrect = pieceIndex === position && moves > 0;
 
           return (
             <motion.button
               key={position}
               onClick={() => handlePieceClick(position)}
-              whileHover={{ scale: 1.05, zIndex: 10 }}
-              animate={isSelected ? { scale: 1.08, zIndex: 10 } : { scale: 1, zIndex: 1 }}
-              className="relative overflow-hidden"
+              whileHover={{ scale: 1.02 }}
+              animate={
+                isSelected
+                  ? { scale: 1.08, boxShadow: "0 0 0 2px var(--accent-cyan)" }
+                  : { scale: 1, boxShadow: "none" }
+              }
+              transition={{ duration: 0.15 }}
               style={{
-                width: PIECE_SIZE_VAR,
-                height: PIECE_SIZE_VAR,
+                width: pieceSize,
+                height: pieceSize,
                 backgroundImage: `url(${PUZZLE_IMAGE})`,
-                backgroundSize: `${GRID_SIZE_VAR} ${GRID_SIZE_VAR}`,
-                backgroundPosition: `calc(var(--piece-size) * ${-col}) calc(var(--piece-size) * ${-row})`,
-                border: isSelected
-                  ? "3px solid var(--accent-cyan)"
-                  : isCorrect && moves > 0
+                backgroundSize: `${gridSize}px ${gridSize}px`,
+                backgroundPosition: `-${col * pieceSize}px -${row * pieceSize}px`,
+                border: isCorrect
                   ? "2px solid var(--accent-yellow)"
-                  : "1px solid rgba(255,255,255,0.05)",
-                borderRadius: 6,
+                  : "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "6px",
                 cursor: "pointer",
+                position: "relative",
+                overflow: "hidden",
+                transition: "all 0.2s ease",
               }}
             >
-              <span
-                className="absolute bottom-1 right-1 text-xs font-bold opacity-40"
-                style={{ color: "#fff" }}
-              >
-                {pieceIndex + 1}
-              </span>
+              {isCorrect && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 2,
+                    right: 2,
+                    background: "rgba(0,0,0,0.6)",
+                    borderRadius: "999px",
+                    width: "18px",
+                    height: "18px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <CheckCircle size={12} style={{ color: "var(--accent-yellow)" }} />
+                </div>
+              )}
             </motion.button>
           );
         })}
       </div>
 
       <motion.button
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         onClick={reset}
-        className="mb-8 px-4 py-2 rounded-full text-sm"
         style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          padding: "0.5rem 1.25rem",
+          borderRadius: "999px",
           background: "var(--bg-secondary)",
           color: "var(--text-muted)",
           border: "1px solid rgba(255,255,255,0.1)",
+          cursor: "pointer",
+          fontSize: "0.875rem",
+          marginBottom: "2rem",
         }}
       >
-        🔀 Embaralhar novamente
+        <Shuffle size={16} />
+        Embaralhar
       </motion.button>
 
-      {/* Tela de conclusão */}
       <AnimatePresence>
         {solved && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="fixed inset-0 flex items-center justify-center z-50 px-4"
-            style={{ background: "rgba(11,15,25,0.92)", backdropFilter: "blur(8px)" }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: "fixed",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 50,
+              padding: "1rem",
+              background: "rgba(11,15,25,0.96)",
+              backdropFilter: "blur(8px)",
+            }}
           >
             <motion.div
               initial={{ scale: 0.7, y: 40 }}
               animate={{ scale: 1, y: 0 }}
-              className="text-center rounded-2xl p-10 max-w-sm w-full"
-              style={{ background: "var(--bg-secondary)", border: "1px solid var(--accent-pink)" }}
+              exit={{ scale: 0.7, y: 40 }}
+              style={{
+                borderRadius: "1rem",
+                overflow: "hidden",
+                maxWidth: "28rem",
+                width: "100%",
+                background: "var(--bg-secondary)",
+                border: "1px solid var(--accent-pink)",
+              }}
             >
-              <p className="text-5xl mb-4">🧩✨</p>
-              <h2 className="text-2xl font-black mb-3" style={{ color: "var(--accent-pink)" }}>
-                Montou tudo!
-              </h2>
-              <p className="mb-2 text-sm" style={{ color: "var(--text-muted)" }}>
-                {moves} movimentos para completar
-              </p>
-              <p className="mb-8" style={{ color: "var(--text-muted)" }}>
-                Último desafio liberado. É hora da surpresa final!
-              </p>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => router.push("/")}
-                className="px-8 py-4 rounded-full font-bold text-lg"
-                style={{ background: "var(--gradient-challenges)", color: "#fff" }}
-              >
-                Voltar para o início →
-              </motion.button>
+              <div style={{ position: "relative", width: "100%", height: "14rem" }}>
+                <Image
+                  src="/images/momento-4.jpg"
+                  alt="Parabéns"
+                  fill
+                  style={{ objectFit: "cover" }}
+                  sizes="(max-width: 768px) 100vw, 448px"
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: "linear-gradient(to top, rgba(255,20,147,0.3), transparent)",
+                  }}
+                />
+              </div>
+              <div style={{ padding: "1.5rem", textAlign: "center" }}>
+                <p
+                  style={{
+                    fontSize: "1.125rem",
+                    fontWeight: "bold",
+                    marginBottom: "1.5rem",
+                    color: "var(--accent-pink)",
+                  }}
+                >
+                  Montou tudo!
+                </p>
+                <p
+                  style={{
+                    fontSize: "0.875rem",
+                    marginBottom: "0.5rem",
+                    color: "var(--text-muted)",
+                  }}
+                >
+                  {moves} movimentos para completar
+                </p>
+                <p
+                  style={{
+                    fontSize: "0.875rem",
+                    marginBottom: "1.5rem",
+                    color: "var(--text-muted)",
+                  }}
+                >
+                  Boa neguinho. Agora só falta 1 desafio!!
+                </p>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => router.push("/")}
+                  style={{
+                    padding: "0.75rem 1.5rem",
+                    borderRadius: "9999px",
+                    fontWeight: "bold",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    background: "var(--gradient-challenges)",
+                    color: "#fff",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  Voltar para o início
+                  <ArrowRight size={16} />
+                </motion.button>
+              </div>
             </motion.div>
           </motion.div>
         )}

@@ -6,9 +6,13 @@ import { getProgress, completeChallenge, type Progress, type ChallengeId } from 
 
 export function useProgress() {
   const [progress, setProgress] = useState<Progress>({ completed: [], unlocked: [1] });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setProgress(getProgress());
+    // Carrega o progresso (simula assíncrono, mas getProgress é síncrono)
+    const loaded = getProgress();
+    setProgress(loaded);
+    setIsLoading(false);
   }, []);
 
   const complete = useCallback((id: ChallengeId) => {
@@ -19,5 +23,5 @@ export function useProgress() {
   const unlocked = (id: ChallengeId) => progress.unlocked.includes(id);
   const completed = (id: ChallengeId) => progress.completed.includes(id);
 
-  return { progress, complete, unlocked, completed };
+  return { progress, complete, unlocked, completed, isLoading };
 }

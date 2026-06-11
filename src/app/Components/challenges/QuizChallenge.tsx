@@ -4,54 +4,45 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { Brain, ArrowRight, RotateCcw, Trophy } from "lucide-react";
 import { useProgress } from "../../hooks/useProgress";
 
 const QUESTIONS = [
   {
-    question: "Lorem ipsum dolor sit amet, qual a resposta correta?",
+    question: "O que o Jonas Balduino gosta de fazer?",
     options: [
-      "Opção A lorem",
-      "Opção B lorem",
-      "Opção C lorem",
-      "Opção D lorem",
+      "Estuprar",
+      "Estudar",
+      "Jogar ATT no Roblox",
+      "Namorar a namorada dele",
     ],
     correct: 0,
-    wrongPhoto: "/images/quiz-wrong-1.jpg",
-    rightPhoto: "/images/quiz-right-1.jpg",
   },
   {
-    question: "Lorem ipsum: qual foi aquele momento incrível?",
-    options: ["Lorem A", "Lorem B", "Lorem C", "Lorem D"],
+    question: "O que você leva para comer no RU??",
+    options: ["Pica", "Farofa", "Batata Palha", "Salsicha"],
     correct: 2,
-    wrongPhoto: "/images/quiz-wrong-2.jpg",
-    rightPhoto: "/images/quiz-right-2.jpg",
   },
   {
-    question: "Qual a comida favorita do Arthur quando a gente sai?",
-    options: ["Lorem A", "Lorem B", "Lorem C", "Lorem D"],
+    question: "O que o Daniel é ??",
+    options: ["Teimoso", "Maravilhoso, Lindo, Gato, Safado, Estudioso, Jogador", "Racista", "Fedido"],
     correct: 1,
-    wrongPhoto: "/images/quiz-wrong-3.jpg",
-    rightPhoto: "/images/quiz-right-3.jpg",
   },
   {
-    question: "Lorem ipsum: e aquela vez que aconteceu isso?",
-    options: ["Lorem A", "Lorem B", "Lorem C", "Lorem D"],
+    question: "Por qual motivo o Daniel Colonheze foi quase expulso da escola??",
+    options: ["Por falar de mais na aula", "Por bater em algué,", "Quase reprovar", "Falar meu pau na sua mão para diversas pessoas"],
     correct: 3,
-    wrongPhoto: "/images/quiz-wrong-4.jpg",
-    rightPhoto: "/images/quiz-right-4.jpg",
   },
   {
     question: "O que o Arthur merece hoje?",
-    options: ["Tudo", "Nada (brincadeira)", "Um presente incrível", "A e C"],
+    options: ["Rola", "Nada", "Amor e carinho", "A e C"],
     correct: 3,
-    wrongPhoto: "/images/quiz-wrong-5.jpg",
-    rightPhoto: "/images/quiz-right-5.jpg",
   },
 ];
 
 type Feedback = {
   type: "right" | "wrong";
-  photo: string;
   message: string;
 } | null;
 
@@ -69,14 +60,12 @@ export default function QuizChallenge() {
     if (idx === q.correct) {
       setFeedback({
         type: "right",
-        photo: q.rightPhoto,
-        message: "Isso aí! Você sabe das coisas 🎉",
+        message: "Boa Viadinho",
       });
     } else {
       setFeedback({
         type: "wrong",
-        photo: q.wrongPhoto,
-        message: "Errou feio, hein... tenta de novo 😂",
+        message: "Errou pai, faz de novo",
       });
     }
   }
@@ -97,43 +86,57 @@ export default function QuizChallenge() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
-      style={{ background: "var(--bg-primary)" }}
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "2rem 1rem",
+        background: "var(--bg-primary)",
+      }}
     >
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-10"
-      >
-        <p
-          className="text-xs uppercase tracking-widest mb-2"
-          style={{ color: "var(--accent-cyan)" }}
+      <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.5rem",
+            marginBottom: "0.5rem",
+          }}
         >
-          Desafio 01
-        </p>
+          <Brain size={20} style={{ color: "var(--accent-cyan)" }} />
+          <p
+            style={{
+              fontSize: "0.75rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "var(--accent-cyan)",
+            }}
+          >
+            Desafio 01
+          </p>
+        </div>
         <h1
-          className="text-3xl md:text-4xl font-black"
-          style={{ color: "var(--text-primary)" }}
+          style={{
+            fontSize: "clamp(1.75rem, 5vw, 2.5rem)",
+            fontWeight: 900,
+            color: "var(--text-primary)",
+          }}
         >
-          Quiz dos Bons Momentos 🧠
+          Quiz Elegante
         </h1>
-        <p className="mt-2 text-sm" style={{ color: "var(--text-muted)" }}>
+        <p
+          style={{
+            marginTop: "0.5rem",
+            fontSize: "0.875rem",
+            color: "var(--text-muted)",
+          }}
+        >
           Pergunta {current + 1} de {QUESTIONS.length}
         </p>
-        {/* Barra de progresso */}
-        <div
-          className="mt-4 w-64 mx-auto h-1 rounded-full"
-          style={{ background: "var(--bg-secondary)" }}
-        >
-          <motion.div
-            className="h-full rounded-full"
-            style={{ background: "var(--accent-cyan)" }}
-            animate={{ width: `${(current / QUESTIONS.length) * 100}%` }}
-            transition={{ duration: 0.4 }}
-          />
-        </div>
-      </motion.div>
+      </div>
 
       <AnimatePresence mode="wait">
         {finished ? (
@@ -141,29 +144,61 @@ export default function QuizChallenge() {
             key="finished"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-center"
+            style={{ textAlign: "center" }}
           >
-            <p className="text-6xl mb-6">🎉</p>
+            <div
+              style={{
+                width: "5rem",
+                height: "5rem",
+                margin: "0 auto 1.5rem auto",
+                borderRadius: "9999px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "rgba(0,240,255,0.15)",
+              }}
+            >
+              <Trophy size={40} style={{ color: "var(--accent-yellow)" }} />
+            </div>
             <h2
-              className="text-3xl font-black mb-4"
-              style={{ color: "var(--accent-yellow)" }}
+              style={{
+                fontSize: "1.875rem",
+                fontWeight: 900,
+                marginBottom: "1rem",
+                color: "var(--accent-yellow)",
+              }}
             >
               Quiz concluído!
             </h2>
-            <p className="mb-8" style={{ color: "var(--text-muted)" }}>
-              Você provou que é um bom amigo. Próximo desafio liberado!
+            <p
+              style={{
+                marginBottom: "2rem",
+                maxWidth: "28rem",
+                color: "var(--text-muted)",
+              }}
+            >
+              Você provou seu conhecimento. Próximo desafio liberado!
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => router.push("/")}
-              className="px-8 py-4 rounded-full font-bold text-lg"
               style={{
+                padding: "1rem 2rem",
+                borderRadius: "9999px",
+                fontWeight: "bold",
+                fontSize: "1.125rem",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.5rem",
                 background: "var(--gradient-hero)",
                 color: "#fff",
+                border: "none",
+                cursor: "pointer",
               }}
             >
-              Voltar para o início →
+              Voltar para o início
+              <ArrowRight size={18} />
             </motion.button>
           </motion.div>
         ) : (
@@ -172,44 +207,64 @@ export default function QuizChallenge() {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -40 }}
-            className="w-full max-w-xl"
+            style={{ width: "100%", maxWidth: "42rem" }}
           >
-            {/* Pergunta */}
             <div
-              className="rounded-2xl p-8 mb-6"
               style={{
-                background: "var(--bg-secondary)",
-                border: "1px solid rgba(0,240,255,0.1)",
+                marginBottom: "3rem",
+                background:
+                  "linear-gradient(135deg, var(--bg-secondary) 0%, rgba(30,34,53,0.8) 100%)",
+                border: "1px solid rgba(0,240,255,0.3)",
+                borderRadius: "1rem",
+                padding: "2rem",
+                boxShadow:
+                  "0 20px 40px rgba(0,0,0,0.3), 0 0 20px rgba(0,240,255,0.1)",
               }}
             >
               <p
-                className="text-xl font-semibold"
-                style={{ color: "var(--text-primary)" }}
+                style={{
+                  fontSize: "1.25rem",
+                  lineHeight: "1.5",
+                  fontWeight: 600,
+                  color: "var(--text-primary)",
+                }}
               >
                 {q.question}
               </p>
             </div>
 
-            {/* Opções */}
-            <div className="flex flex-col gap-3">
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+              }}
+            >
               {q.options.map((opt, i) => (
                 <motion.button
                   key={i}
-                  whileHover={{ scale: 1.02, x: 4 }}
+                  whileHover={{ scale: 1.01, x: 6 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleAnswer(i)}
                   disabled={!!feedback}
-                  className="text-left px-6 py-4 rounded-xl font-medium transition-all"
                   style={{
-                    background: "var(--bg-secondary)",
-                    border: "1px solid rgba(138,43,226,0.3)",
+                    textAlign: "left",
+                    padding: "0.625rem 1rem",
+                    borderRadius: "0.75rem",
+                    fontWeight: 500,
+                    background: "rgba(30,34,53,0.6)",
+                    border: "1px solid rgba(138,43,226,0.4)",
                     color: "var(--text-primary)",
                     cursor: feedback ? "not-allowed" : "pointer",
+                    backdropFilter: "blur(4px)",
                   }}
                 >
                   <span
-                    style={{ color: "var(--accent-purple)" }}
-                    className="mr-3"
+                    style={{
+                      color: "var(--accent-purple)",
+                      fontWeight: "bold",
+                      marginRight: "0.75rem",
+                    }}
                   >
                     {String.fromCharCode(65 + i)}.
                   </span>
@@ -221,16 +276,21 @@ export default function QuizChallenge() {
         )}
       </AnimatePresence>
 
-      {/* Feedback overlay */}
       <AnimatePresence>
         {feedback && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 flex items-center justify-center z-50 px-4"
             style={{
-              background: "rgba(11,15,25,0.9)",
+              position: "fixed",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 50,
+              padding: "1rem",
+              background: "rgba(11,15,25,0.95)",
               backdropFilter: "blur(8px)",
             }}
           >
@@ -238,29 +298,49 @@ export default function QuizChallenge() {
               initial={{ scale: 0.7, y: 40 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.7, y: 40 }}
-              className="rounded-2xl overflow-hidden max-w-sm w-full text-center"
               style={{
+                borderRadius: "1rem",
+                overflow: "hidden",
+                maxWidth: "28rem",
+                width: "100%",
                 background: "var(--bg-secondary)",
                 border: `1px solid ${feedback.type === "right" ? "var(--accent-cyan)" : "var(--accent-pink)"}`,
               }}
             >
-              {/* Foto */}
               <div
-                className="w-full h-48 flex items-center justify-center text-6xl"
-                style={{
-                  background:
-                    feedback.type === "right"
-                      ? "rgba(0,240,255,0.1)"
-                      : "rgba(255,20,147,0.1)",
-                }}
+                style={{ position: "relative", width: "100%", height: "14rem" }}
               >
-                {/* Troque por <img> quando tiver as fotos */}
-                {feedback.type === "right" ? "😄" : "😬"}
-              </div>
-              <div className="p-6">
-                <p
-                  className="text-lg font-bold mb-4"
+                <Image
+                  src={
+                    feedback.type === "right"
+                      ? "/images/momento-8.jpg"
+                      : "/images/momento-7.jpg"
+                  }
+                  alt={feedback.type === "right" ? "Acerto" : "Erro"}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 448px"
+                />
+                <div
                   style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background:
+                      feedback.type === "right"
+                        ? "linear-gradient(to top, rgba(0,240,255,0.3), transparent)"
+                        : "linear-gradient(to top, rgba(255,20,147,0.3), transparent)",
+                  }}
+                />
+              </div>
+              <div style={{ padding: "1.5rem", textAlign: "center" }}>
+                <p
+                  style={{
+                    fontSize: "1.125rem",
+                    fontWeight: "bold",
+                    marginBottom: "1.5rem",
                     color:
                       feedback.type === "right"
                         ? "var(--accent-cyan)"
@@ -273,20 +353,37 @@ export default function QuizChallenge() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={handleNext}
-                  className="px-6 py-3 rounded-full font-bold"
                   style={{
+                    padding: "0.75rem 1.5rem",
+                    borderRadius: "9999px",
+                    fontWeight: "bold",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
                     background:
                       feedback.type === "right"
                         ? "var(--accent-cyan)"
                         : "var(--accent-pink)",
                     color: "#000",
+                    border: "none",
+                    cursor: "pointer",
                   }}
                 >
-                  {feedback.type === "right"
-                    ? current + 1 >= QUESTIONS.length
-                      ? "Ver resultado!"
-                      : "Próxima pergunta →"
-                    : "Tentar de novo"}
+                  {feedback.type === "right" ? (
+                    current + 1 >= QUESTIONS.length ? (
+                      <>
+                        Ver resultado <Trophy size={16} />
+                      </>
+                    ) : (
+                      <>
+                        Próxima pergunta <ArrowRight size={16} />
+                      </>
+                    )
+                  ) : (
+                    <>
+                      Tentar de novo <RotateCcw size={16} />
+                    </>
+                  )}
                 </motion.button>
               </div>
             </motion.div>

@@ -1,10 +1,9 @@
 // src/app/page.tsx
 "use client";
 
-import HeroSection from "./Components/sections/HeroSection";
+import HeroSection from "./Components/sections/hero/HeroSection";
 import ChallengesSection from "./Components/sections/ChallengesSection";
- 
- 
+
 export default function Home() {
   return (
     <main>
@@ -13,4 +12,3 @@ export default function Home() {
     </main>
   );
 }
- 
