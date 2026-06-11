@@ -114,19 +114,23 @@ export default function ChallengesSection() {
           </p>
         </motion.div>
 
+        {/* Container lado a lado com responsividade */}
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            flexDirection: "row",
+            flexWrap: "wrap",
             justifyContent: "center",
+            alignItems: "center",
             gap: "2rem",
           }}
         >
+          {/* Lista de desafios */}
           <div
             style={{
-              width: "100%",
-              maxWidth: "28rem",
+              flex: "1",
+              minWidth: "280px",
+              maxWidth: "400px",
               display: "flex",
               flexDirection: "column",
               gap: "1rem",
@@ -154,16 +158,15 @@ export default function ChallengesSection() {
             })}
           </div>
 
+          {/* Cigarro 3D ao lado */}
           <div
             style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              width: "260px",
+              height: "380px",
+              flexShrink: 0,
             }}
           >
-            <div style={{ width: "260px", height: "380px" }}>
-              <Cigarro3D />
-            </div>
+            <Cigarro3D />
           </div>
         </div>
       </div>
