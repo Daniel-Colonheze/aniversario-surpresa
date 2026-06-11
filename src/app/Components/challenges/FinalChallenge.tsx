@@ -208,7 +208,6 @@ export default function FinalChallenge() {
             marginBottom: "0.5rem",
           }}
         >
-          <span style={{ color: "var(--accent-yellow)" }}>🎁</span>
           <p
             style={{
               fontSize: "0.75rem",
@@ -337,7 +336,7 @@ export default function FinalChallenge() {
             Feliz Aniversário, Arthur!
           </h2>
           <p style={{ fontSize: "1rem", color: "var(--text-muted)", marginTop: "0.5rem" }}>
-            Você completou todos os desafios. 🎉
+            Você completou todos os desafios. 
           </p>
         </motion.div>
       )}
