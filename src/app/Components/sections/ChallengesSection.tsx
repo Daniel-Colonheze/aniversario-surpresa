@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Brain, Key, Puzzle, Gift, Lock, type LucideIcon } from "lucide-react";
 import { useProgress } from "../../hooks/useProgress";
 import type { ChallengeId } from "../../lib/store";
@@ -158,15 +159,38 @@ export default function ChallengesSection() {
             })}
           </div>
 
-          {/* Cigarro 3D ao lado */}
+          {/* Lado direito: cigarro + imagem */}
           <div
             style={{
-              width: "260px",
-              height: "380px",
-              flexShrink: 0,
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "1rem",
+              flexWrap: "wrap",
             }}
           >
-            <Cigarro3D />
+            <div style={{ width: "260px", height: "380px" }}>
+              <Cigarro3D />
+            </div>
+            <div
+              style={{
+                width: "260px",
+                height: "380px",
+                position: "relative",
+                borderRadius: "1rem",
+                overflow: "hidden",
+                boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
+              }}
+            >
+              <Image
+                src="/images/momento-6.jpg"
+                alt="Momento especial"
+                fill
+                style={{ objectFit: "cover" }}
+                sizes="(max-width: 768px) 260px, 260px"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -192,9 +216,9 @@ function ChallengeCard({
         position: "relative",
         overflow: "hidden",
         width: "100%",
-        minHeight: "60px",
+        minHeight: "70px",
         borderRadius: "12px",
-        padding: "8px 12px",
+        padding: "12px 16px",
         transition: "all 0.2s ease",
         display: "flex",
         alignItems: "center",
@@ -233,7 +257,7 @@ function ChallengeCard({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: "12px",
+          gap: "16px",
         }}
       >
         <div
@@ -241,8 +265,8 @@ function ChallengeCard({
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: "32px",
-            height: "32px",
+            width: "40px",
+            height: "40px",
             borderRadius: "999px",
             background: locked
               ? "rgba(255,255,255,0.05)"
@@ -251,19 +275,19 @@ function ChallengeCard({
           }}
         >
           {locked ? (
-            <Lock size={16} strokeWidth={1.75} />
+            <Lock size={20} strokeWidth={1.75} />
           ) : (
-            <Icon size={16} strokeWidth={1.75} />
+            <Icon size={20} strokeWidth={1.75} />
           )}
         </div>
         <div style={{ textAlign: "center" }}>
           <span
             style={{
               display: "block",
-              fontSize: "10px",
+              fontSize: "12px",
               fontWeight: 600,
               letterSpacing: "0.16em",
-              marginBottom: "2px",
+              marginBottom: "4px",
               color: locked ? "var(--text-muted)" : challenge.color,
             }}
           >
@@ -271,7 +295,7 @@ function ChallengeCard({
           </span>
           <h3
             style={{
-              fontSize: "12px",
+              fontSize: "16px",
               fontWeight: 700,
               lineHeight: 1.2,
               color: locked ? "var(--text-muted)" : "var(--text-primary)",
