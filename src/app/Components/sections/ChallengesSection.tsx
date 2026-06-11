@@ -2,10 +2,9 @@
 
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { Brain, Key, Puzzle, Gift, Lock } from "lucide-react";
-import { useProgress } from "../../hooks/useProgress";
-import type { ChallengeId } from "../../lib/store";
+import { useProgress } from "../../../hooks/useProgress";
+import type { ChallengeId } from "../../../lib/store";
 import Cigarro3D from "./Cigarro3D";
 
 const CHALLENGES = [
@@ -43,46 +42,96 @@ const CHALLENGES = [
   },
 ];
 
+interface ChallengeCardProps {
+  challenge: {
+    id: ChallengeId;
+    number: string;
+    title: string;
+    icon: React.ElementType;
+    color: string;
+    route: string;
+  };
+  locked: boolean;
+  done: boolean;
+  onClick: () => void;
+}
+
 export default function ChallengesSection() {
   const { unlocked, completed } = useProgress();
   const router = useRouter();
 
   return (
     <section
-      className="relative min-h-screen flex flex-col items-center justify-center px-4 py-12 md:py-16 overflow-hidden"
-      style={{ background: "var(--bg-primary)" }}
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "2rem 1rem",
+        background: "var(--bg-primary)",
+      }}
     >
-      <div
-        className="absolute top-12 right-10 w-72 h-96 hidden md:block pointer-events-none z-0"
-        style={{ transform: "rotate(-6deg)" }}
-      >
-        <Image
-          src="/images/momento-3.jpg"
-          alt="Momento"
-          fill
-          className="object-cover rounded-2xl"
-          sizes="(max-width: 768px) 0vw, 288px"
-        />
-      </div>
-
-      <div className="relative z-10 w-full max-w-6xl">
+      <div style={{ width: "100%", maxWidth: "1200px", margin: "0 auto" }}>
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="text-center mb-12 md:mb-16"
+          style={{ textAlign: "center", marginBottom: "3rem" }}
         >
+          <p
+            style={{
+              fontSize: "0.75rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.3em",
+              marginBottom: "0.75rem",
+              color: "var(--accent-cyan)",
+            }}
+          >
+            Sua jornada
+          </p>
           <h2
-            className="text-4xl md:text-6xl font-black"
-            style={{ color: "var(--text-primary)" }}
+            style={{
+              fontSize: "clamp(2rem, 6vw, 3.5rem)",
+              fontWeight: 900,
+              color: "var(--text-primary)",
+            }}
           >
             Complete os desafios
           </h2>
+          <p
+            style={{
+              marginTop: "1rem",
+              fontSize: "1rem",
+              maxWidth: "32rem",
+              marginLeft: "auto",
+              marginRight: "auto",
+              color: "var(--text-muted)",
+            }}
+          >
+            Cada etapa concluída desbloqueia a próxima.
+          </p>
         </motion.div>
 
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-16">
-          <div className="w-full max-w-md flex flex-col gap-4">
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "2rem",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "28rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+            }}
+          >
             {CHALLENGES.map((c, i) => {
               const isLocked = !unlocked(c.id);
               const isDone = completed(c.id);
@@ -105,8 +154,8 @@ export default function ChallengesSection() {
             })}
           </div>
 
-          <div className="flex justify-center items-center shrink-0">
-            <div className="w-[260px] h-[380px] md:w-[280px] md:h-[400px]">
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <div style={{ width: "260px", height: "380px" }}>
               <Cigarro3D />
             </div>
           </div>
@@ -116,28 +165,26 @@ export default function ChallengesSection() {
   );
 }
 
-function ChallengeCard({ challenge, locked, done, onClick }) {
+function ChallengeCard({ challenge, locked, done, onClick }: ChallengeCardProps) {
   const Icon = challenge.icon;
+
   return (
     <motion.button
       onClick={onClick}
       disabled={locked}
       whileHover={!locked ? { scale: 1.02 } : {}}
       whileTap={!locked ? { scale: 0.98 } : {}}
-      className="
-        relative
-        overflow-hidden
-        w-full
-        min-h-[64px]
-        rounded-lg
-        px-4
-        py-3
-        transition-all
-        flex
-        items-center
-        justify-center
-      "
       style={{
+        position: "relative",
+        overflow: "hidden",
+        width: "100%",
+        minHeight: "60px",
+        borderRadius: "12px",
+        padding: "8px 12px",
+        transition: "all 0.2s ease",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
         background: locked
           ? "rgba(30,34,53,0.35)"
           : done
@@ -156,16 +203,33 @@ function ChallengeCard({ challenge, locked, done, onClick }) {
     >
       {!locked && (
         <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
           style={{
+            position: "absolute",
+            inset: 0,
+            opacity: 0.1,
+            pointerEvents: "none",
             background: `radial-gradient(circle at center, ${challenge.color}, transparent 70%)`,
           }}
         />
       )}
-      <div className="relative z-10 flex items-center justify-center gap-3">
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "12px",
+        }}
+      >
         <div
-          className="flex items-center justify-center w-10 h-10 rounded-full"
           style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "32px",
+            height: "32px",
+            borderRadius: "999px",
             background: locked
               ? "rgba(255,255,255,0.05)"
               : `${challenge.color}15`,
@@ -173,21 +237,31 @@ function ChallengeCard({ challenge, locked, done, onClick }) {
           }}
         >
           {locked ? (
-            <Lock size={18} strokeWidth={1.75} />
+            <Lock size={16} strokeWidth={1.75} />
           ) : (
-            <Icon size={18} strokeWidth={1.75} />
+            <Icon size={16} strokeWidth={1.75} />
           )}
         </div>
-        <div className="text-center">
+        <div style={{ textAlign: "center" }}>
           <span
-            className="block text-[11px] font-semibold tracking-[0.16em] mb-1"
-            style={{ color: locked ? "var(--text-muted)" : challenge.color }}
+            style={{
+              display: "block",
+              fontSize: "10px",
+              fontWeight: 600,
+              letterSpacing: "0.16em",
+              marginBottom: "2px",
+              color: locked ? "var(--text-muted)" : challenge.color,
+            }}
           >
             {done ? "CONCLUÍDO" : `DESAFIO ${challenge.number}`}
           </span>
           <h3
-            className="text-sm md:text-base font-bold leading-tight"
-            style={{ color: locked ? "var(--text-muted)" : "var(--text-primary)" }}
+            style={{
+              fontSize: "12px",
+              fontWeight: 700,
+              lineHeight: 1.2,
+              color: locked ? "var(--text-muted)" : "var(--text-primary)",
+            }}
           >
             {challenge.title}
           </h3>
