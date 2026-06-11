@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Brain, Key, Puzzle, Gift, Lock } from "lucide-react";
+import { Brain, Key, Puzzle, Gift, Lock, type LucideIcon } from "lucide-react";
 import { useProgress } from "../../hooks/useProgress";
 import type { ChallengeId } from "../../lib/store";
 import Cigarro3D from "./Cigarro3D";
@@ -47,7 +47,7 @@ interface ChallengeCardProps {
     id: ChallengeId;
     number: string;
     title: string;
-    icon: React.ElementType;
+    icon: LucideIcon;
     color: string;
     route: string;
   };
@@ -154,7 +154,13 @@ export default function ChallengesSection() {
             })}
           </div>
 
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <div style={{ width: "260px", height: "380px" }}>
               <Cigarro3D />
             </div>
@@ -165,7 +171,12 @@ export default function ChallengesSection() {
   );
 }
 
-function ChallengeCard({ challenge, locked, done, onClick }: ChallengeCardProps) {
+function ChallengeCard({
+  challenge,
+  locked,
+  done,
+  onClick,
+}: ChallengeCardProps) {
   const Icon = challenge.icon;
 
   return (
