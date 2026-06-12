@@ -28,20 +28,21 @@ export default function HeroContent() {
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 text-center mt-16 md:mt-24 lg:mt-32"
+        className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 text-center mt-12 sm:mt-16 md:mt-24 lg:mt-32 w-full"
         variants={container}
         initial="hidden"
-        animate="show"
+        whileInView="show"
         exit="exit"
+        viewport={{ once: false, amount: 0.2 }}
       >
         <motion.h1
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight mb-6"
+          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight mb-6 flex flex-wrap justify-center items-center"
           variants={container}
         >
           {WORDS.map((word, index) => (
             <motion.span
-              key={word}
-              className="inline-block mr-3 md:mr-4"
+              key={index}
+              className="inline-block mx-1.5 sm:mr-3 md:mr-4 my-1"
               variants={fadeUp}
               style={{
                 background: index % 2 === 0 ? "var(--gradient-hero)" : undefined,
@@ -55,9 +56,9 @@ export default function HeroContent() {
           ))}
         </motion.h1>
 
-        <motion.div variants={fadeUp} className="flex flex-col items-center gap-4">
+        <motion.div variants={fadeUp} className="flex flex-col items-center gap-4 w-full px-2">
           <motion.p
-            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light"
+            className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-light max-w-prose break-words"
             style={{ color: "var(--accent-pink)" }}
             variants={{
               hidden: { opacity: 0, y: 16 },
@@ -69,11 +70,11 @@ export default function HeroContent() {
           </motion.p>
 
           <motion.span
-            className="text-sm md:text-base font-black tracking-[0.2em] uppercase px-6 py-2 rounded-full"
+            className="text-xs sm:text-sm md:text-base font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase px-4 py-2.5 sm:px-6 sm:py-3 rounded-full max-w-full text-center break-words inline-flex justify-center items-center"
             style={{
               background: "linear-gradient(135deg, #FF1493, #8A2BE2)",
               color: "#fff",
-              padding: "20px",
+              padding: "1rem"
             }}
             variants={{
               hidden: { opacity: 0, scale: 0.85 },
