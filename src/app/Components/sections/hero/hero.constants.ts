@@ -3,27 +3,39 @@ export const WORDS = ["Para", "um", "amigo", "especial."];
 export const BACKGROUND_IMAGES = [
   {
     src: "/images/momento-1.jpg",
-    position: "top-10 left-6",
-    rotate: -8,
-    size: "w-72 h-96",
+    position: "top-6 left-4",
+    rotate: -7,
+    size: "w-60 h-80",
   },
   {
     src: "/images/momento-2.jpg",
-    position: "bottom-0 left-6",
-    rotate: 6,
-    size: "w-72 h-96",
+    position: "top-1/2 -translate-y-1/2 left-4",
+    rotate: 5,
+    size: "w-60 h-80",
+  },
+  {
+    src: "/images/momento-11.jpg",
+    position: "bottom-6 left-4",
+    rotate: -4,
+    size: "w-60 h-80",
   },
   {
     src: "/images/momento-3.jpg",
-    position: "top-12 right-10",
-    rotate: -6,
-    size: "w-72 h-96",
+    position: "top-6 right-4",
+    rotate: 6,
+    size: "w-60 h-80",
   },
   {
     src: "/images/momento-4.jpg",
-    position: "bottom-1/4 right-10",
+    position: "top-1/2 -translate-y-1/2 right-4",
+    rotate: -5,
+    size: "w-60 h-80",
+  },
+  {
+    src: "/images/momento-12.jpg",
+    position: "bottom-6 right-4",
     rotate: 4,
-    size: "w-72 h-96",
+    size: "w-60 h-80",
   },
 ];
 
@@ -37,9 +49,7 @@ export const PARTICLES = Array.from({ length: 55 }, () => {
       : colorRoll > 0.35
         ? "var(--accent-purple)"
         : "var(--accent-pink)";
-
   const size = rand(1.5, 5.5);
-
   return {
     width: size,
     height: size,
