@@ -16,15 +16,19 @@ export default function HeroParticles() {
             left: particle.left,
             top: particle.top,
             background: particle.color,
+            filter: `blur(${particle.blur}px)`,
           }}
           animate={{
-            y: [0, -35, 0],
-            opacity: [0.15, 0.7, 0.15],
+            y: [0, particle.yRange, 0],
+            x: [0, particle.xRange, 0],
+            opacity: [particle.opacityMin, particle.opacityMax, particle.opacityMin],
+            scale: [1, 1.4, 1],
           }}
           transition={{
             duration: particle.duration,
             repeat: Infinity,
             delay: particle.delay,
+            ease: "easeInOut",
           }}
         />
       ))}

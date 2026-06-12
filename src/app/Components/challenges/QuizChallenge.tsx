@@ -31,7 +31,7 @@ const QUESTIONS = [
   },
   {
     question: "Por qual motivo o Daniel Colonheze foi quase expulso da escola??",
-    options: ["Por falar de mais na aula", "Por bater em algué,", "Quase reprovar", "Falar meu pau na sua mão para diversas pessoas"],
+    options: ["Por falar de mais na aula", "Por bater em alguém", "Quase reprovar", "Falar meu pau na sua mão para diversas pessoas"],
     correct: 3,
   },
   {

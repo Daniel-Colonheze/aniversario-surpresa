@@ -27,17 +27,31 @@ export const BACKGROUND_IMAGES = [
   },
 ];
 
-export const PARTICLES = Array.from({ length: 40 }, () => ({
-  width: Math.random() * 4 + 1,
-  height: Math.random() * 4 + 1,
-  left: `${Math.random() * 100}%`,
-  top: `${Math.random() * 100}%`,
-  duration: 4 + Math.random() * 5,
-  delay: Math.random() * 2,
-  color:
-    Math.random() > 0.6
+const rand = (min: number, max: number) => Math.random() * (max - min) + min;
+
+export const PARTICLES = Array.from({ length: 55 }, () => {
+  const colorRoll = Math.random();
+  const color =
+    colorRoll > 0.65
       ? "var(--accent-cyan)"
-      : Math.random() > 0.3
+      : colorRoll > 0.35
         ? "var(--accent-purple)"
-        : "var(--accent-pink)",
-}));
+        : "var(--accent-pink)";
+
+  const size = rand(1.5, 5.5);
+
+  return {
+    width: size,
+    height: size,
+    left: `${rand(0, 100)}%`,
+    top: `${rand(0, 100)}%`,
+    duration: rand(4, 10),
+    delay: rand(0, 4),
+    color,
+    blur: size > 4 ? 1.5 : 0,
+    yRange: -(rand(20, 50)),
+    xRange: rand(-18, 18),
+    opacityMin: rand(0.08, 0.2),
+    opacityMax: rand(0.55, 0.85),
+  };
+});

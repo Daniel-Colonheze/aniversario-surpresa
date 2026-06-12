@@ -7,6 +7,7 @@ import { Brain, Key, Puzzle, Gift, Lock, type LucideIcon } from "lucide-react";
 import { useProgress } from "../../hooks/useProgress";
 import type { ChallengeId } from "../../lib/store";
 import Cigarro3D from "./Cigarro3D";
+import { PARTICLES } from "../sections/hero/hero.constants";
 
 const CHALLENGES = [
   {
@@ -71,9 +72,52 @@ export default function ChallengesSection() {
         justifyContent: "center",
         padding: "2rem 1rem",
         background: "var(--bg-primary)",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      <div style={{ width: "100%", maxWidth: "1200px", margin: "0 auto" }}>
+      <div className="absolute inset-0 pointer-events-none z-0">
+        {PARTICLES.map((particle, index) => (
+          <motion.div
+            key={index}
+            className="absolute rounded-full"
+            style={{
+              width: particle.width,
+              height: particle.height,
+              left: particle.left,
+              top: particle.top,
+              background: particle.color,
+              filter: `blur(${particle.blur}px)`,
+            }}
+            animate={{
+              y: [0, particle.yRange, 0],
+              x: [0, particle.xRange, 0],
+              opacity: [
+                particle.opacityMin,
+                particle.opacityMax,
+                particle.opacityMin,
+              ],
+              scale: [1, 1.4, 1],
+            }}
+            transition={{
+              duration: particle.duration,
+              repeat: Infinity,
+              delay: particle.delay,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
+
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "1200px",
+          margin: "0 auto",
+          position: "relative",
+          zIndex: 10,
+        }}
+      >
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -115,7 +159,6 @@ export default function ChallengesSection() {
           </p>
         </motion.div>
 
-        {/* Container lado a lado com responsividade */}
         <div
           style={{
             display: "flex",
@@ -126,7 +169,6 @@ export default function ChallengesSection() {
             gap: "2rem",
           }}
         >
-          {/* Lista de desafios */}
           <div
             style={{
               flex: "1",
@@ -159,7 +201,6 @@ export default function ChallengesSection() {
             })}
           </div>
 
-          {/* Lado direito: cigarro + imagem */}
           <div
             style={{
               display: "flex",
