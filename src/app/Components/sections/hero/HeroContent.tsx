@@ -1,9 +1,9 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { WORDS } from "./hero.constants";
 
-const container: Variants = {
+const container = {
   hidden: {},
   show: {
     transition: {
@@ -13,9 +13,9 @@ const container: Variants = {
   },
 };
 
-const fadeUp: Variants = {
+const fadeUp = {
   hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
 export default function HeroContent() {
@@ -26,6 +26,7 @@ export default function HeroContent() {
       initial="hidden"
       animate="show"
     >
+
       <motion.h1
         className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight mb-6"
         variants={container}
