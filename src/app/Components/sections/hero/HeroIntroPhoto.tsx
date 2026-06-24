@@ -34,7 +34,7 @@ export default function HeroIntroPhoto({ scrollProgress }: HeroIntroPhotoProps) 
         whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
       >
         <Image
-          src="/images/momento-5.jpg"
+          src="/images/momento-13.jpeg"
           alt="Momento Especial"
           fill
           priority

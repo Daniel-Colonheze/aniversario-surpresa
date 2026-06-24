@@ -28,7 +28,7 @@ export default function HeroContent() {
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 text-center mt-12 sm:mt-16 md:mt-24 lg:mt-32 w-full"
+        className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 text-center w-full flex flex-col items-center"
         variants={container}
         initial="hidden"
         whileInView="show"
@@ -66,7 +66,7 @@ export default function HeroContent() {
               exit: { opacity: 0, y: -16, transition: { duration: 0.4 } },
             }}
           >
-            Arthur Begosso
+            Pedro Ogawa de Oliveira
           </motion.p>
 
           <motion.span
@@ -99,7 +99,7 @@ export default function HeroContent() {
               },
             }}
           >
-            Chupa Engole
+            Peida Leite
           </motion.span>
         </motion.div>
       </motion.div>

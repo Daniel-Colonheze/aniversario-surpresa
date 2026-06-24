@@ -31,16 +31,30 @@ export default function HeroSection() {
           style={{ paddingTop: "6rem" }}
         >
           <HeroIntroPhoto scrollProgress={scrollYProgress} />
-
-          <motion.div
-            style={{ marginTop: "29rem", width: "100%", marginLeft: "50rem" }}
-            initial={{ opacity: 0, y: 48 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
-            <HeroContent />
-          </motion.div>
         </div>
+
+        <motion.div
+          style={{
+            position: "absolute",
+            top: "100%",
+            transform: "translate(-50%, -50%)",
+            width: "100%",
+            zIndex: 10,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          initial={{ opacity: 0, y: 48 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.8,
+            delay: 0.6,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
+        >
+          <HeroContent />
+        </motion.div>
+
         <HeroScrollIndicator scrollProgress={scrollYProgress} />
       </div>
     </section>

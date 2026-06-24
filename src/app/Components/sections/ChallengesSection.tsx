@@ -191,7 +191,7 @@ export default function ChallengesSection() {
               style={{ width: "260px", height: "380px", position: "relative", borderRadius: "1rem", overflow: "hidden", boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }}
               whileHover={{ scale: 1.03, boxShadow: "0 25px 50px rgba(0,0,0,0.4)", transition: { duration: 0.3 } }}
             >
-              <Image src="/images/momento-6.jpg" alt="Momento especial" fill style={{ objectFit: "cover" }} sizes="(max-width: 768px) 260px, 260px" />
+              <Image src="/images/momento-5.jpeg" alt="Momento especial" fill style={{ objectFit: "cover" }} sizes="(max-width: 768px) 260px, 260px" />
             </motion.div>
           </motion.div>
         </div>

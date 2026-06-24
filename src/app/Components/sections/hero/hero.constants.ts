@@ -1,38 +1,38 @@
-export const WORDS = ["Para", "um", "amigo", "especial."];
+export const WORDS = ["Para", "um", "primo", "especial."];
 
 export const BACKGROUND_IMAGES = [
   {
-    src: "/images/momento-1.jpg",
+    src: "/images/momento-1.jpeg",
     position: "top-6 left-4",
     rotate: -7,
     size: "w-60 h-80",
   },
   {
-    src: "/images/momento-2.jpg",
+    src: "/images/momento-2.jpeg",
     position: "top-1/2 -translate-y-1/2 left-4",
     rotate: 5,
     size: "w-60 h-80",
   },
   {
-    src: "/images/momento-11.jpg",
+    src: "/images/momento-11.jpeg",
     position: "bottom-6 left-4",
     rotate: -4,
     size: "w-60 h-80",
   },
   {
-    src: "/images/momento-3.jpg",
+    src: "/images/momento-3.jpeg",
     position: "top-6 right-4",
     rotate: 6,
     size: "w-60 h-80",
   },
   {
-    src: "/images/momento-4.jpg",
+    src: "/images/momento-4.jpeg",
     position: "top-1/2 -translate-y-1/2 right-4",
     rotate: -5,
     size: "w-60 h-80",
   },
   {
-    src: "/images/momento-12.jpg",
+    src: "/images/momento-12.jpeg",
     position: "bottom-6 right-4",
     rotate: 4,
     size: "w-60 h-80",
