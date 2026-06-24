@@ -31,42 +31,29 @@ import { useProgress } from "../../hooks/useProgress";
 
 // Mapeamento ícone (nome) → letra para a frase "PEIDANTE NERVOSO"
 const ICON_TO_LETTER: Record<string, string> = {
-  Circle: "P",
-  Square: "E",
-  Triangle: "I",
-  Diamond: "D",
-  Star: "A",
-  Hexagon: "N",
-  Octagon: "T",
-  Zap: " ",
-  Heart: "R",
-  Music: "V",
-  Sun: "O",
-  Moon: "S",
+  Circle: "E",
+  Square: "U",
+  Triangle: "A",
+  Diamond: "M",
+  Star: "O",
+  Hexagon: "V",
+  Zap: "espaço",
 };
 
-// Ícones correspondentes à frase "PEIDANTE NERVOSO"
-// P  E  I  D  A  N  T  E   espaço   N  E  R  V  O  S  O
 const ENCODED_ICONS = [
-  "Circle",
-  "Square",
-  "Triangle",
-  "Diamond",
-  "Star",
-  "Hexagon",
-  "Octagon",
-  "Square", // PEIDANTE
-  "Zap", // espaço
-  "Hexagon",
-  "Square",
-  "Heart",
-  "Music",
-  "Sun",
-  "Moon",
-  "Sun", // NERVOSO (N E R V O S O)
+  "Circle",  // E
+  "Square",  // U
+  "Zap",     // espaço
+  "Triangle", // A
+  "Diamond", // M
+  "Star",    // O
+  "Zap",     // espaço
+  "Star",    // O
+  "Hexagon", // V
+  "Star",    // O
 ];
 
-const ANSWER = "PEIDANTE NERVOSO";
+const ANSWER = "EU AMO OVO";
 
 // Função para renderizar o ícone correto
 const getIconComponent = (iconName: string) => {
