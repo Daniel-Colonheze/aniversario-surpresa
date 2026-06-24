@@ -8,7 +8,7 @@ export const BACKGROUND_IMAGES = [
     size: "w-60 h-80",
   },
   {
-    src: "/images/momento-2.jpeg",
+    src: "/images/momento-14.jpeg",
     position: "top-1/2 -translate-y-1/2 left-4",
     rotate: 5,
     size: "w-60 h-80",
@@ -20,7 +20,7 @@ export const BACKGROUND_IMAGES = [
     size: "w-60 h-80",
   },
   {
-    src: "/images/momento-3.jpeg",
+    src: "/images/momento-15.jpeg",
     position: "top-6 right-4",
     rotate: 6,
     size: "w-60 h-80",

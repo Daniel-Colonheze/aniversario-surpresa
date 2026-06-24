@@ -43,9 +43,9 @@ function generateConfetti(count = 80): Confetti[] {
 
 function Balloon3D({ progress, burst }: { progress: number; burst: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
-  const { scene } = useGLTF("/3D/ballon.glb");
+  const { scene } = useGLTF("/3D/balloon.glb");
 
-  const scale = (0.8 + progress * 1.2) * 0.05;
+  const scale = (0.8 + progress * 1.2) * 0.008;
   const hue = 20 + progress * 320;
 
   useEffect(() => {
@@ -88,13 +88,13 @@ function Cake3D() {
   });
 
   return (
-    <group ref={groupRef} scale={[0.05, 0.05, 0.05]}>
+    <group ref={groupRef} scale={[0.010, 0.010, 0.010]}>
       <primitive object={scene} />
     </group>
   );
 }
 
-useGLTF.preload("/3D/ballon.glb");
+useGLTF.preload("/3D/balloon.glb");
 useGLTF.preload("/3D/cake.glb");
 
 export default function FinalChallenge() {

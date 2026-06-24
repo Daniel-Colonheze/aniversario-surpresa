@@ -12,7 +12,7 @@ const QUESTIONS = [
   {
     question: "O que o Pedro gosta de fazer no seu tempo livre?",
     options: [
-      "A e D",
+      "B e D",
       "Jogar Joguinhos",
       "Trabalhar no Call Centerr",
       "Namorar a namorada dele",
@@ -21,7 +21,7 @@ const QUESTIONS = [
   },
   {
     question: "O que o Pedro não pode comer nem ferrando (se não ele morre) ?",
-    options: ["Arroz", "Quiabo frito da vó", "Bolo", "Chocolate"],
+    options: ["Arroz", "Quiabo frito da vó", "Ovo", "Chocolate"],
     correct: 2,
   },
   {
@@ -71,7 +71,7 @@ export default function QuizChallenge() {
     if (idx === q.correct) {
       setFeedback({
         type: "right",
-        message: "Boa Viadinho",
+        message: "Boa Lindão",
       });
     } else {
       setFeedback({
