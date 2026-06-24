@@ -10,7 +10,7 @@ import { useProgress } from "../../hooks/useProgress";
 
 const GRID = 4;
 const TOTAL = GRID * GRID;
-const PUZZLE_IMAGE = "/images/momento-10.jpg";
+const PUZZLE_IMAGE = "/images/momento-10.jpeg";
 
 function createShuffled(): number[] {
   const arr = Array.from({ length: TOTAL }, (_, i) => i);
@@ -267,7 +267,7 @@ export default function PuzzleChallenge() {
             >
               <div style={{ position: "relative", width: "100%", height: "14rem" }}>
                 <Image
-                  src="/images/momento-4.jpg"
+                  src="/images/momento-4.jpeg"
                   alt="Parabéns"
                   fill
                   style={{ objectFit: "cover" }}
@@ -311,7 +311,7 @@ export default function PuzzleChallenge() {
                     color: "var(--text-muted)",
                   }}
                 >
-                  Boa neguinho. Agora só falta 1 desafio!!
+                  Boa moreno. Agora só falta 1 desafio!!
                 </p>
                 <motion.button
                   whileHover={{ scale: 1.05 }}

@@ -451,7 +451,7 @@ export default function EnigmaChallenge() {
                 style={{ position: "relative", width: "100%", height: "14rem" }}
               >
                 <Image
-                  src="/images/momento-9.jpg"
+                  src="/images/momento-9.jpeg"
                   alt="Erro"
                   fill
                   style={{ objectFit: "cover" }}

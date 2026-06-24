@@ -1,10 +1,9 @@
-// src/components/challenges/FinalChallenge.tsx
 "use client";
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Sphere, Cone, Cylinder, MeshReflectorMaterial, Html } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { MeshReflectorMaterial, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 const MAX_CLICKS = 350;
@@ -42,16 +41,29 @@ function generateConfetti(count = 80): Confetti[] {
   }));
 }
 
-// Componente 3D do balão
 function Balloon3D({ progress, burst }: { progress: number; burst: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
-  const scale = 0.8 + progress * 1.2; // escala de 0.8 a 2.0
+  const { scene } = useGLTF("/3D/ballon.glb");
+
+  const scale = (0.8 + progress * 1.2) * 0.05;
   const hue = 20 + progress * 320;
-  const color = `hsl(${hue}, 80%, 55%)`;
+
+  useEffect(() => {
+    scene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        (child as THREE.Mesh).material = new THREE.MeshStandardMaterial({
+          color: new THREE.Color(`hsl(${hue}, 80%, 55%)`),
+          emissive: new THREE.Color(`hsl(${hue}, 80%, 55%)`),
+          emissiveIntensity: 0.3,
+          roughness: 0.2,
+          metalness: 0.1,
+        });
+      }
+    });
+  }, [scene, hue]);
 
   useFrame(() => {
     if (groupRef.current && !burst) {
-      // Pequena flutuação
       groupRef.current.rotation.y += 0.005;
     }
   });
@@ -60,25 +72,15 @@ function Balloon3D({ progress, burst }: { progress: number; burst: boolean }) {
 
   return (
     <group ref={groupRef} scale={[scale, scale, scale]}>
-      {/* Corpo do balão (esfera) */}
-      <Sphere args={[0.8, 32, 32]} position={[0, 0, 0]}>
-        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.3} roughness={0.2} metalness={0.1} />
-      </Sphere>
-      {/* Bico do balão (cone invertido) */}
-      <Cone args={[0.25, 0.5, 16]} position={[0, -0.9, 0]} rotation={[0, 0, 0]}>
-        <meshStandardMaterial color={color} />
-      </Cone>
-      {/* Linha do balão */}
-      <Cylinder args={[0.03, 0.03, 1.2, 6]} position={[0, -1.4, 0]}>
-        <meshStandardMaterial color="#aaa" />
-      </Cylinder>
+      <primitive object={scene} />
     </group>
   );
 }
 
-// Componente 3D do bolo
 function Cake3D() {
   const groupRef = useRef<THREE.Group>(null);
+  const { scene } = useGLTF("/3D/cake.glb");
+
   useFrame(() => {
     if (groupRef.current) {
       groupRef.current.rotation.y += 0.003;
@@ -86,34 +88,14 @@ function Cake3D() {
   });
 
   return (
-    <group ref={groupRef}>
-      {/* Camada inferior */}
-      <Cylinder args={[1.2, 1.2, 0.4, 32]} position={[0, -0.6, 0]}>
-        <meshStandardMaterial color="#E8A859" roughness={0.3} />
-      </Cylinder>
-      {/* Camada média */}
-      <Cylinder args={[0.9, 0.9, 0.4, 32]} position={[0, -0.2, 0]}>
-        <meshStandardMaterial color="#D4894A" roughness={0.3} />
-      </Cylinder>
-      {/* Camada superior */}
-      <Cylinder args={[0.6, 0.6, 0.4, 32]} position={[0, 0.2, 0]}>
-        <meshStandardMaterial color="#F0C0A0" roughness={0.3} />
-      </Cylinder>
-      {/* Cobertura (glacê) */}
-      <Cylinder args={[0.65, 0.65, 0.08, 32]} position={[0, 0.45, 0]}>
-        <meshStandardMaterial color="#FFB6C1" emissive="#FF69B4" emissiveIntensity={0.2} />
-      </Cylinder>
-      {/* Vela */}
-      <Cylinder args={[0.08, 0.08, 0.5, 8]} position={[0, 0.8, 0]}>
-        <meshStandardMaterial color="#FFD700" />
-      </Cylinder>
-      {/* Chama */}
-      <Sphere args={[0.12, 8, 8]} position={[0, 1.05, 0]}>
-        <meshStandardMaterial color="#FF4500" emissive="#FF6600" emissiveIntensity={0.8} />
-      </Sphere>
+    <group ref={groupRef} scale={[0.05, 0.05, 0.05]}>
+      <primitive object={scene} />
     </group>
   );
 }
+
+useGLTF.preload("/3D/ballon.glb");
+useGLTF.preload("/3D/cake.glb");
 
 export default function FinalChallenge() {
   const [clicks, setClicks] = useState(0);
@@ -170,7 +152,6 @@ export default function FinalChallenge() {
         background: "var(--bg-primary)",
       }}
     >
-      {/* Confetti 2D */}
       <AnimatePresence>
         {burst &&
           confetti.map((c) => (
@@ -193,7 +174,6 @@ export default function FinalChallenge() {
           ))}
       </AnimatePresence>
 
-      {/* Cabeçalho */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -240,7 +220,6 @@ export default function FinalChallenge() {
         )}
       </motion.div>
 
-      {/* Área 3D */}
       <div
         style={{
           width: "100%",
@@ -265,7 +244,6 @@ export default function FinalChallenge() {
             ) : (
               <Cake3D />
             )}
-            {/* Chão reflexivo */}
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.8, 0]}>
               <planeGeometry args={[10, 10]} />
               <MeshReflectorMaterial
@@ -283,7 +261,6 @@ export default function FinalChallenge() {
             </mesh>
           </Canvas>
         )}
-        {/* Barra de progresso abaixo do canvas (só antes de estourar) */}
         {!showCake && !burst && (
           <div
             style={{
@@ -315,7 +292,6 @@ export default function FinalChallenge() {
         </p>
       )}
 
-      {/* Mensagem final (opcional) */}
       {showCake && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -333,10 +309,10 @@ export default function FinalChallenge() {
               backgroundClip: "text",
             }}
           >
-            Feliz Aniversário, Arthur!
+            Feliz Aniversário, Pedro!
           </h2>
           <p style={{ fontSize: "1rem", color: "var(--text-muted)", marginTop: "0.5rem" }}>
-            Você completou todos os desafios. 
+            Você completou todos os desafios.
           </p>
         </motion.div>
       )}

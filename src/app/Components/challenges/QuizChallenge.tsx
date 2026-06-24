@@ -10,33 +10,44 @@ import { useProgress } from "../../hooks/useProgress";
 
 const QUESTIONS = [
   {
-    question: "O que o Jonas Balduino gosta de fazer?",
+    question: "O que o Pedro gosta de fazer no seu tempo livre?",
     options: [
-      "Estuprar",
-      "Estudar",
-      "Jogar ATT no Roblox",
+      "A e D",
+      "Jogar Joguinhos",
+      "Trabalhar no Call Centerr",
       "Namorar a namorada dele",
     ],
     correct: 0,
   },
   {
-    question: "O que você leva para comer no RU??",
-    options: ["Pica", "Farofa", "Batata Palha", "Salsicha"],
+    question: "O que o Pedro não pode comer nem ferrando (se não ele morre) ?",
+    options: ["Arroz", "Quiabo frito da vó", "Bolo", "Chocolate"],
     correct: 2,
   },
   {
     question: "O que o Daniel é ??",
-    options: ["Teimoso", "Maravilhoso, Lindo, Gato, Safado, Estudioso, Jogador", "Racista", "Fedido"],
+    options: [
+      "Teimoso",
+      "Maravilhoso, Lindo, Gato, Safado, Estudioso, Jogador, Programador",
+      "Autista",
+      "Fedido",
+    ],
     correct: 1,
   },
   {
-    question: "Por qual motivo o Daniel Colonheze foi quase expulso da escola??",
-    options: ["Por falar de mais na aula", "Por bater em alguém", "Quase reprovar", "Falar meu pau na sua mão para diversas pessoas"],
+    question:
+      "Quantos anos o Daniel tem??",
+    options: [
+      "18",
+      "20",
+      "18.5",
+      "19",
+    ],
     correct: 3,
   },
   {
-    question: "O que o Arthur merece hoje?",
-    options: ["Rola", "Nada", "Amor e carinho", "A e C"],
+    question: "O que o Pedro merece hoje?",
+    options: ["Apanhar", "Nada", "Amor e carinho", "A e C"],
     correct: 3,
   },
 ];
@@ -313,8 +324,8 @@ export default function QuizChallenge() {
                 <Image
                   src={
                     feedback.type === "right"
-                      ? "/images/momento-8.jpg"
-                      : "/images/momento-7.jpg"
+                      ? "/images/momento-8.jpeg"
+                      : "/images/momento-9.jpeg"
                   }
                   alt={feedback.type === "right" ? "Acerto" : "Erro"}
                   fill
